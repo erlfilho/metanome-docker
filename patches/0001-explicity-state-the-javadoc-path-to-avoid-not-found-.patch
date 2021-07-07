@@ -1,0 +1,30 @@
+From e2dbbccdbd6141012bb9e7c91a53c035516849b8 Mon Sep 17 00:00:00 2001
+From: Edson Lucas <edson.lucas@uni-passau.de>
+Date: Wed, 7 Jul 2021 16:00:08 +0000
+Subject: [PATCH] explicity state the javadoc path to avoid 'not found' error
+
+The javadoc command is not found when building Metanome in a docker
+container. This bug happens depending on the image that is being used
+and was tested on debian:buster.
+
+Signed-off-by: Edson Ramiro Lucas Filho <edson.lucas@uni-passau.de>
+---
+ pom.xml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/pom.xml b/pom.xml
+index 126ff281..ab6f9402 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -193,6 +193,7 @@ limitations under the License.
+                     <configuration>
+                         <quiet>true</quiet>
+                         <detectJavaApiLink>false</detectJavaApiLink>
++                        <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+                     </configuration>
+                     <executions>
+                         <execution>
+-- 
+2.30.2
+
+
