@@ -32,20 +32,27 @@ RUN apt-get update &&\
         vim \
         wget
 
+####################
 # Create and Configure metanome user
 RUN useradd -m -G sudo -s /bin/bash metanome && echo "metanome:metanome" | chpasswd
 RUN echo "%sudo   ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
 RUN echo "PATH=\"${PATH}:/usr/lib/jvm/default-java/bin/\"" >> /home/metanome/.bashrc
 
-# Download and Compile Metanome
+# Configure env
 USER metanome
 WORKDIR /home/metanome/
+
+# Set env
+ENV PATH="${PATH}:/usr/lib/jvm/default-java/bin/"
+ENV MAVEN_OPTS="-Xmx1g -Xms20m -Xss10m"
+ENV JAVA_PATH="/usr/lib/jvm/default-java/"
+
+####################
+# Download Metanome
 
 # Upgrade npm before compiling
 RUN sudo npm install -g npm
 
-#################################################################
-# Download Metanome
 RUN git clone https://github.com/HPI-Information-Systems/Metanome.git metanome
 WORKDIR /home/metanome/metanome/
 
@@ -56,15 +63,17 @@ RUN git submodule update
 # Build Metanome in parallel
 RUN mvn -T 1C clean install -DskipTests=true
 
-#################################################################
+####################
 # Download and Compile Metanome algorithms
 WORKDIR /home/metanome/
 RUN git clone https://github.com/HPI-Information-Systems/metanome-algorithms.git
 WORKDIR metanome-algorithms/
 
 # Build
-RUN MAVEN_OPTS="-Xmx1g -Xms20m -Xss10m" mvn -T 1C clean install -DskipTests=true
+RUN mvn -T 1C clean install -DskipTests=true
 
+####################
 # Leave bash at $HOME
 WORKDIR /home/metanome/
 CMD /bin/bash
+
