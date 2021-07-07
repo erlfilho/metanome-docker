@@ -63,7 +63,7 @@ RUN git clone https://github.com/HPI-Information-Systems/metanome-algorithms.git
 WORKDIR metanome-algorithms/
 
 # Build
-RUN MAVEN_OPTS="-Xmx1g -Xms20m -Xss10m" mvn clean install
+RUN MAVEN_OPTS="-Xmx1g -Xms20m -Xss10m" mvn -T 1C clean install -DskipTests=true
 
 # Leave bash at $HOME
 WORKDIR /home/metanome/
