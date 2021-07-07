@@ -60,6 +60,10 @@ WORKDIR /home/metanome/metanome/
 RUN git submodule init
 RUN git submodule update
 
+# Apply patch
+COPY patches/0001-explicity-state-the-javadoc-path-to-avoid-not-found-.patch .
+RUN patch < 0001-explicity-state-the-javadoc-path-to-avoid-not-found-.patch
+
 # Build Metanome in parallel
 RUN mvn -T 1C clean install -DskipTests=true
 
@@ -76,4 +80,3 @@ RUN mvn -T 1C clean install -DskipTests=true
 # Leave bash at $HOME
 WORKDIR /home/metanome/
 CMD /bin/bash
-
