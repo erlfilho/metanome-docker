@@ -4,6 +4,6 @@ This docker downloads and builds the [metanome project](https://github.com/HPI-I
 
 ```console
 git clone git@github.com:erlfilho/metanome-docker.git
-docker built -t metanome .
+docker build -t metanome .
 docker run -it metanome /bin/bash
 ```
